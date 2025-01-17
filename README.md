@@ -19,6 +19,7 @@ You can add these to your /docs folder:
  * [book1.pdf](http://romhacking.net/docs/226/) - Official SNES programming manual
  * [Programmanual.pdf](www.westerndesigncenter.com/wdc/datasheets/Programmanual.pdf) - If 65816primer.txt isn't enough
  * w65c816s.pdf (missing link) - 65816 datasheet
+ * [Fullsnes](https://problemkaputt.de/fullsnes.htm) - No$ SNES documentation
 
 ### Emulators
 You can populate your /emu folder with these recommended emulators
@@ -44,20 +45,27 @@ You can populate your /emu folder with these recommended emulators
  * [SPCTool](http://spcsets.caitsith2.net/spctool/)
    * Very useful for SPC development.
 
-## Getting Started
+## Using SNESKIT
+
+### Getting Started
 Two templates are provided in `/template`. One is for LOROM mapping mode, the other is for
 HIROM mapping mode. The templates contain a HEADER.ASM which should be modified to suit
 your purposes—it contains start vectors, mapping mode, game title, cartridge speed (append
 _FAST to map mode to indicate a higher-speed cartridge), and NTSC/PAL can be selected by
 changing the region.
 
-## SNESMOD
-To use SNESMOD, the SNESMOD source files must be added to the startfiles in the makefile.
-see the SNESMOD example.
+### Syntax Highlighting
+
+ * [VS Code - ca65 Language Support](https://marketplace.visualstudio.com/items?itemName=tlgkccampbell.code-ca65)
+   * Extension for VS Code to support ca65.
+
+### snesmod
+To use snesmod, the snesmod source files must be added to the startfiles in the makefile.
+See the snesmod example.
 
 snesmod.asm sm_spc.asm
 
-## SNESGRIT
+### snesgrit
 This is a graphics converter for SNES which is a modified version of the "GBA Raster Image
 Transmogrifier" by Cearn, which is distributed under the GPL. Please contact me
 (me@mukunda.com) if you would like to obtain the [modified] source code.

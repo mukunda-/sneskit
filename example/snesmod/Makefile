@@ -9,7 +9,7 @@
 #---------------------------------------------------------------------------------
 
 ifeq ($(strip $(SNESKIT)),)
-$(error SNESKIT path not found, please add it to your environment)
+$(error SNESKIT not found, please add SNESKIT=<path to sneskit> to your environment)
 endif
 
 include	$(SNESKIT)/snes_rules
@@ -22,23 +22,23 @@ include	$(SNESKIT)/snes_rules
 # GRAPHICS is a list of directories containing image files for conversion
 # AUDIO is a list of directories containing audio files
 #---------------------------------------------------------------------------------
-TARGET		:=	$(notdir $(CURDIR))
-BUILD		:=	build
-SOURCES		:=	source
-INCLUDES	:=	include
-GRAPHICS	:=	graphics
-AUDIO		:=	audio
+TARGET    := $(notdir $(CURDIR))
+BUILD     := build
+SOURCES   := source
+INCLUDES  := include
+GRAPHICS  := graphics
+AUDIO     := audio
 
 #hirom
-MAPMODE		:=	hirom
+MAPMODE   := hirom
 
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 
-STARTFILES	:= snes_init snes_zvars snes_decompress snes_joypad snesmod sm_spc
-ASFLAGS		:= --cpu 65816 -s -D HIROM
-SMCONVFLAGS	:= --hirom --soundbank --output soundbank
+STARTFILES  := snes_init snes_zvars snes_decompress snes_joypad snesmod sm_spc
+ASFLAGS     := --cpu 65816 -s -D HIROM
+SMCONVFLAGS := --hirom --soundbank --output soundbank
 
 #---------------------------------------------------------------------------------
 ifneq ($(BUILD),$(notdir $(CURDIR)))
