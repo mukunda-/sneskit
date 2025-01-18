@@ -32,7 +32,7 @@ class TestSneschk(unittest.TestCase):
    # output which may be an arbitrary file size.
    def test_padding(self):
       with self.create_sfc_tmp(80000) as f: pass
-      output = self.call_sneschk([SFC_TMP_FILE])
+      output = self.call_sneschk([SFC_TMP_FILE, "-m", "hirom"])
       self.assertIn("File size: 80000", output)
       self.assertIn("Computed size header value: 7", output)
       self.assertIn("Current size header value: 0", output)
@@ -40,7 +40,7 @@ class TestSneschk(unittest.TestCase):
       self.assertNotIn("bytes of zero-padding", output)
       self.assertEqual(os.path.getsize(SFC_TMP_FILE), 80000)
 
-      output = self.call_sneschk([SFC_TMP_FILE, "--fix"])
+      output = self.call_sneschk([SFC_TMP_FILE, "--fix", "-m", "hirom"])
       self.assertIn("File size: 80000", output)
       self.assertIn(f"Writing {131072 - 80000} bytes of zero-padding", output)
       self.assertEqual(os.path.getsize(SFC_TMP_FILE), 131072)
@@ -57,15 +57,15 @@ class TestSneschk(unittest.TestCase):
    # It's tricky to have a real validation.
    def test_validation(self):
       with self.create_sfc_tmp(0) as f: pass
-      output = self.call_sneschk([SFC_TMP_FILE])
+      output = self.call_sneschk([SFC_TMP_FILE, "-m", "hirom"])
       self.assertIn("file is too small to contain a valid cartridge header", output)
       
       with self.create_sfc_tmp(65535) as f: pass
-      output = self.call_sneschk([SFC_TMP_FILE])
+      output = self.call_sneschk([SFC_TMP_FILE, "-m", "hirom"])
       self.assertIn("file is too small to contain a valid cartridge header", output)
 
       with self.create_sfc_tmp(65536) as f: pass
-      output = self.call_sneschk([SFC_TMP_FILE])
+      output = self.call_sneschk([SFC_TMP_FILE, "-m", "hirom"])
       self.assertIn("Current checksum bytes: 00 00 00 00", output)
 
       os.remove(SFC_TMP_FILE)
@@ -93,11 +93,11 @@ class TestSneschk(unittest.TestCase):
       ccs = cs ^ 0xFFFF
       csformatted = self.format_byte_string([ccs & 0xFF, ccs >> 8, cs & 0xFF, cs >> 8])
 
-      output = self.call_sneschk([SFC_TMP_FILE])
+      output = self.call_sneschk([SFC_TMP_FILE, "-m", "hirom"])
       self.assertIn("Current checksum bytes: 11 11 11 11", output)
       self.assertIn(f"Computed checksum bytes: {csformatted}", output)
 
-      output = self.call_sneschk([SFC_TMP_FILE, "--fix"])
+      output = self.call_sneschk([SFC_TMP_FILE, "--fix", "-m", "hirom"])
 
       # The extra +7 is the ROM size header byte set by --fix
       cs = (1 + 2  + 3 + 4 + 0xFF * 266 + 0xFF*2 + 7 + 10 * 16384) & 0xFFFF

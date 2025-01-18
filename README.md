@@ -9,7 +9,7 @@
 
 After checking out the repo, run setup.py to install tools. 
 
-Recommended to add SNESKIT to your environment pointing to the SNESKIT folder.
+SNESKIT should be added to your environment pointing to the sneskit folder.
 
 ## Tool installations:
 
@@ -74,6 +74,9 @@ snesmod.asm sm_spc.asm
 This is a graphics converter for SNES which is a modified version of the "GBA Raster Image
 Transmogrifier" by Cearn, which is distributed under the GPL. Please contact me
 (me@mukunda.com) if you would like to obtain the [modified] source code.
+
+## Contributions welcome!
+Check the issues page for things to do.
 
 ## IRC
 Join #snesdev on EFNet!

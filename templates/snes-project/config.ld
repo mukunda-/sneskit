@@ -29,8 +29,11 @@ MEMORY {
 
 #-------------------------------------------------------------------------
 # Insert ROM sections for program data.
+# Note that some tools will say your cart is corrupt if it's smaller than
+# 1 mbit, hence 3 ROM sections here by default.
 	ROM1: start = $818000, size = $8000, fill = yes;
-#	ROM2: start = $828000, size = $8000, fill = yes;
+	ROM2: start = $820000, size = $8000, fill = yes;
+	ROM3: start = $828000, size = $8000, fill = yes;
 
 # For HiROM, use these instead of the above (size 64k, bank $C0+)
 #	ROM1: start = $C18000, size = $10000, fill = yes;

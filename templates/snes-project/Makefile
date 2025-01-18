@@ -10,8 +10,6 @@ ifeq ($(strip $(SNESKIT)),)
 $(error SNESKIT not found, please add SNESKIT=<path to sneskit> to your environment)
 endif
 
-# Might have to prefix .py tools with "py" on Windows Python3 installations.
-
 SNESTOOLS := $(SNESKIT)/tools
 SNESGRIT  := $(SNESTOOLS)/snesgrit
 SNESCHK   := $(SNESTOOLS)/sneschk
@@ -36,7 +34,7 @@ SOURCES  := source
 INCLUDES := include
 GRAPHICS := graphics
 AUDIO    := audio
-MAPMODE  := hirom
+MAPMODE  := lorom
 MAPFILE  := YES
 
 #-----------------------------------------------------------------------------------------
@@ -49,10 +47,14 @@ ASFLAGS     := --cpu 65816 -s
 # For snesmod (if used), we convert to a soundbank target.
 SOUNDBANK   := $(BUILD)/soundbank
 SMCONVFLAGS := --soundbank --output $(SOUNDBANK)
+SNESCHKFLAGS := --fix
 
 ifeq ($(MAPMODE),hirom)
 ASFLAGS     += -D HIROM
 SMCONVFLAGS += --hirom
+SNESCHKFLAGS += -m hirom
+else
+SNESCHKFLAGS += -m lorom
 endif
 
 # Include paths.
@@ -134,6 +136,6 @@ else
 endif
 
 	@echo "Running sneschk (checksums and padding)"
-	@$(SNESCHK) $@
+	$(SNESCHK) $(SNESCHKFLAGS) $@ 
 
 	@echo Okay! :: $(notdir $@)

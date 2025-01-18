@@ -1,0 +1,13 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 3
+end_of_line = lf
+charset = utf-8
+
+[*.asm]
+indent_style = tab
+indent_size = 8
