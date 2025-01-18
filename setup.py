@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #***********************************************************
 # Configure environment
-import venv, os
+import venv, os, shutil
 
 venv.create(".venv", with_pip=True)
 if os.name == "nt":
@@ -39,4 +39,15 @@ def install_cc65():
    else:
       print("install_cc65: Unsupported operating system.")
 
+#-----------------------------------------------------------------------------------------
+def install_tools():
+   if os.name == "posix":
+      shutil.copy("tool-src/sneschk/sneschk.py", "tools/sneschk")
+      os.chmod("tools/sneschk", 0o755)
+   else:
+      shutil.copy("tool-src/sneschk/sneschk.py", "tools/sneschk.py")
+      # Windows will use the corresponding .bat file to call the py file.
+   
+#-----------------------------------------------------------------------------------------
 install_cc65()
+install_tools()

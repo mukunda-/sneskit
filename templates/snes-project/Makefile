@@ -10,6 +10,8 @@ ifeq ($(strip $(SNESKIT)),)
 $(error SNESKIT not found, please add SNESKIT=<path to sneskit> to your environment)
 endif
 
+# Might have to prefix .py tools with "py" on Windows Python3 installations.
+
 SNESTOOLS := $(SNESKIT)/tools
 SNESGRIT  := $(SNESTOOLS)/snesgrit
 SNESCHK   := $(SNESTOOLS)/sneschk
@@ -55,20 +57,20 @@ endif
 
 # Include paths.
 INCLUDE := $(foreach dir,$(INCLUDES),-I $(CURDIR)/$(dir)) \
-			-I $(CURDIR)/$(BUILD) \
-			-I $(SNESKIT)/include
+           -I $(CURDIR)/$(BUILD) \
+           -I $(SNESKIT)/include
 
-# Main target (the SMC filename).
-OUTPUT := $(CURDIR)/$(TARGET)
+# Main target (the SFC filename).
+OUTPUT := $(BUILD)/$(TARGET)
 
 # Linker memory configuration.
 LDFLAGS := -C $(CURDIR)/config.ld
 
 # All sources.
 VPATH := $(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
-			$(foreach dir,$(GRAPHICS),$(CURDIR)/$(dir)) \
-			$(foreach dir,$(AUDIO),$(CURDIR)/$(dir)) \
-			$(SNESKIT)/source 
+         $(foreach dir,$(GRAPHICS),$(CURDIR)/$(dir)) \
+         $(foreach dir,$(AUDIO),$(CURDIR)/$(dir)) \
+         $(SNESKIT)/source 
 
 # Code files
 SFILES   := $(STARTFILES) $(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.asm)))
@@ -81,14 +83,15 @@ AUDIOFILES := $(foreach dir,$(AUDIO),$(notdir $(wildcard $(dir)/*.*)))
 
 # If any audio files exist, then link the soundbank.asm code.
 ifneq ($(AUDIOFILES),)
-SFILES := soundbank.asm $(SFILES)
+SFILES := $(BUILD)/soundbank.asm $(SFILES)
 endif
 
 # Gather total output files.
-OFILES := $(PNGFILES:.png=.o) $(SFILES:.asm=.o)
+OFILES := $(addprefix $(BUILD)/,$(PNGFILES:.png=.o)) \
+          $(addprefix $(BUILD)/,$(SFILES:.asm=.o))
 
 #-----------------------------------------------------------------------------------------
-all : $(OUTPUT).smc
+all : $(OUTPUT).sfc
 
 #-----------------------------------------------------------------------------------------
 $(BUILD):
@@ -96,12 +99,12 @@ $(BUILD):
 
 #-----------------------------------------------------------------------------------------
 clean:
-	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).smc $(TARGET).map
+	@echo Removing build files.
+	@rm -fr $(BUILD)
 
 #-----------------------------------------------------------------------------------------
 # Main target
-$(OUTPUT).smc : $(OFILES)
+$(OUTPUT).sfc : $(OFILES)
 
 #-----------------------------------------------------------------------------------------
 # Rule for converting PNG graphics
@@ -116,21 +119,21 @@ soundbank.asm : $(SBXML) $(AUDIOFILES)
 
 #-----------------------------------------------------------------------------------------
 # Assembly step.
-%.o : %.asm
-	@echo Assembling :: $(notdir $<)
+$(BUILD)/%.o : %.asm $(BUILD)
+	@echo Assembling :: $<
 	@$(AS) $(ASFLAGS) $(INCLUDE) $< -o $@
 
 #-----------------------------------------------------------------------------------------
-# Linking step to cartridge binary.
-%.smc:
+# Link step - create cartridge binary.
+$(BUILD)/%.sfc:
 	@echo Linking...
-	ifeq ($(MAPFILE),YES)
-	@$(LD) $(LDFLAGS) $(OFILES) -o $@ -m $(@:.smc=.map)
-	else
+ifeq ($(MAPFILE),YES)
+	@$(LD) $(LDFLAGS) $(OFILES) -o $@ -m $(@:.sfc=.map)
+else
 	@$(LD) $(LDFLAGS) $(OFILES) -o $@
-	endif
+endif
 
-	@echo Updating ROM checksums
-	@$(SNESCHK) $(MAPMODE) $@
-	
+	@echo "Running sneschk (checksums and padding)"
+	@$(SNESCHK) $@
+
 	@echo Okay! :: $(notdir $@)

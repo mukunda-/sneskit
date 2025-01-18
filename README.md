@@ -2,7 +2,12 @@
 
 `JAN 2025 EDITION`
 
-After checking out the repo, run setup.py to install tools.
+*** Prerequisites:
+
+  * python3 (with pip and venv)
+  * git
+
+After checking out the repo, run setup.py to install tools. 
 
 Recommended to add SNESKIT to your environment pointing to the SNESKIT folder.
 

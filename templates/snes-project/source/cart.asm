@@ -83,7 +83,7 @@ DEST_OTHERZ		=14H
 .byte	DEST_USA_CANADA		; D9 - Destination code (USA/Canada) (NTSC)
 .byte	33h			; DA - Fixed byte
 .byte	00h			; DB - Mask ROM version
-.word	0000h			; DC - Complement check (set with sneschk later)
+.word	0FFFFh			; DC - Complement check (set with sneschk later)
 .word	0000h			; DE - Checksum (set with sneschk later)
 
 ;-----------------------------------------------------------------------------------------

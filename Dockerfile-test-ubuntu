@@ -1,0 +1,11 @@
+# Test the distribution/installation on Ubuntu.
+# docker build -f Dockerfile-test-ubuntu -t sneskit-ubuntu .
+FROM ubuntu:22.04
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y python3 python3-venv python3-pip git
+
+COPY . .
+
+RUN /bin/bash tool-src/test-linux.sh
