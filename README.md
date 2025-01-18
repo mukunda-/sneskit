@@ -2,7 +2,7 @@
 
 `JAN 2025 EDITION`
 
-*** Prerequisites:
+### Prerequisites:
 
   * python3 (with pip and venv)
   * git
