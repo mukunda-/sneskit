@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+#*****************************************************************************************
+# sneschk
+# (C) 2025 Mukunda Johnson (me@mukunda.com)
+# License: MIT
+#*****************************************************************************************
 import os, unittest, sneschk, io
 
 SFC_TMP_FILE = ".testsfc.tmp"
