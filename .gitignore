@@ -10,6 +10,6 @@ bin/sneschk.py
 bin/snesbrr*
 bin/pmage*
 bin/*
-!bin/*.bat
 *.lnk
 emu/*
+build

@@ -79,23 +79,27 @@ def install_snesbrr():
    if bin_exists("snesbrr"):
       print("*** snesbrr already installed. Skipping installation.")
       return
-   run("mkdir -p build")
-   run("cd build")
+   os.makedirs("build", mode=0o755, exist_ok=True)
+   os.chdir("build")
    run("git clone https://github.com/mukunda-/snesbrr")
-   run("cd snesbrr")
+   os.chdir("snesbrr")
    run("make sneskit_install")
-   run("cd ../..")
+   os.chdir("..")
+   os.chdir("..")
    
 #-----------------------------------------------------------------------------------------
 def install_snesmod():
    if bin_exists("smconv"):
       print("*** smconv already installed. Skipping installation.")
-   run("mkdir -p build")
-   run("cd build")
+   os.makedirs("build", mode=0o755, exist_ok=True)
+   os.chdir("build")
    run("git clone https://github.com/mukunda-/snesmod")
-   run("cd snesmod/smconv")
+   os.chdir("snesmod")
+   os.chdir("smconv")
    run("make sneskit_install")
-   run("cd ../..")
+   os.chdir("..")
+   os.chdir("..")
+   os.chdir("..")
 
 #-----------------------------------------------------------------------------------------
 install_cc65()

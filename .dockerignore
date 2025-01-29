@@ -5,7 +5,8 @@ __pycache__
 
 # Installed from source
 bin/*
-!bin/*.bat
 *.lnk
 emu/*
 .vscode
+
+build
