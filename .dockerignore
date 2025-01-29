@@ -10,3 +10,5 @@ emu/*
 .vscode
 
 build
+templates/snes-project/build
+example/snesmod/build

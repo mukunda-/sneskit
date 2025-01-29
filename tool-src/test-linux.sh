@@ -1,8 +1,8 @@
 #!/bin/bash
-chmod u+x ./setup.py
-./setup.py
+make
 
 # Test build template project.
-export SNESKIT=/app/
-cd templates/snes-project
-make
+export SNESKIT=/app
+
+make -C templates/snes-project
+make -C example/snesmod

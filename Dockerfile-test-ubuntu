@@ -1,10 +1,18 @@
 # Test the distribution/installation on Ubuntu.
-# docker build -f Dockerfile-test-ubuntu -t sneskit-ubuntu .
+# Build: docker build -f Dockerfile-test-ubuntu -t sneskit-ubuntu --progress=plain . 
+# Use --no-cache to force rebuild (if other repos changed).
+# Inspect files: docker run -it sneskit-ubuntu bash 
 FROM ubuntu:22.04
 
 WORKDIR /app
+ENV PATH=$PATH:/usr/local/go/bin:/root/go/bin
 
-RUN apt-get update && apt-get install -y python3 python3-venv python3-pip git
+RUN apt-get update && apt-get install -y python3 python3-venv python3-pip git curl
+
+# Install Go
+RUN curl -L -O https://go.dev/dl/go1.23.4.linux-amd64.tar.gz \
+   && tar -C /usr/local -xzf go1.23.4.linux-amd64.tar.gz \
+   && go install github.com/a-h/templ/cmd/templ@latest
 
 COPY . .
 
