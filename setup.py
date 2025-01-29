@@ -3,6 +3,12 @@
 # Configure environment
 import venv, os, shutil, glob
 
+# Set SNESKIT environment variable
+if os.environ.get("SNESKIT") is None:
+   sneskit_path = os.path.dirname(os.path.abspath(__file__))
+   os.environ["SNESKIT"] = sneskit_path
+   print(f"SNESKIT environment variable set to: {sneskit_path}")
+
 print("Creating venv.")
 venv.create(".venv", with_pip=True)
 
@@ -55,12 +61,44 @@ def install_tools():
    print("Installing tools.")
    if os.name == "posix":
       # Linux calls the script directly.
-      shutil.copy("tool-src/sneschk/sneschk.py", "tools/sneschk")
-      os.chmod("tools/sneschk", 0o755)
+      shutil.copy("tool-src/sneschk/sneschk.py", "bin/sneschk")
+      os.chmod("bin/sneschk", 0o755)
    else:
       # Windows will use the corresponding .bat file to call the py file.
-      shutil.copy("tool-src/sneschk/sneschk.py", "tools/sneschk.py")
+      shutil.copy("tool-src/sneschk/sneschk.py", "bin/sneschk.py")
+
+#-----------------------------------------------------------------------------------------
+def bin_exists(filename):
+   if os.name == "posix":
+      return os.path.exists(f"bin/{filename}")
+   else:
+      return os.path.exists(f"bin/{filename}.exe")
+
+#-----------------------------------------------------------------------------------------
+def install_snesbrr():
+   if bin_exists("snesbrr"):
+      print("*** snesbrr already installed. Skipping installation.")
+      return
+   run("mkdir -p build")
+   run("cd build")
+   run("git clone https://github.com/mukunda-/snesbrr")
+   run("cd snesbrr")
+   run("make sneskit_install")
+   run("cd ../..")
    
+#-----------------------------------------------------------------------------------------
+def install_snesmod():
+   if bin_exists("smconv"):
+      print("*** smconv already installed. Skipping installation.")
+   run("mkdir -p build")
+   run("cd build")
+   run("git clone https://github.com/mukunda-/snesmod")
+   run("cd snesmod/smconv")
+   run("make sneskit_install")
+   run("cd ../..")
+
 #-----------------------------------------------------------------------------------------
 install_cc65()
 install_tools()
+install_snesbrr()
+install_snesmod()

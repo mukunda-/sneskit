@@ -6,6 +6,8 @@
 
   * python3 (with pip and venv)
   * git
+  * make
+  * go
 
 After checking out the repo, run setup.py to install tools. 
 

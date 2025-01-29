@@ -1,42 +1,41 @@
-;***************************************************
-; snesmod example
-;***************************************************
+;*****************************************************************************************
+; snesmod example code
+;*****************************************************************************************
 
-; NOTE: PRESS A TO MAKE SOUND!
+; Press A to make a sound.
 ;
-; ALSO NOTE THAT SOUND EFFECTS USE UP CHANNEL 8
-; PLEASE ENSURE THAT THE MUSIC DOES NOT USE CHANNEL 8
-; FOR IMPORTANT SECTIONS BECAUSE IT WILL GET OVERWRITTEN
+; Sound effects use up channel 8. Music should avoid
+; using channel 8 for important sections because it
+; may get overwritten.
 ;
-; NOTE THAT THIS MUSIC USES THE HIHAT IN CHANNEL 8 SO
-; IT IS HIGHLY NOTICABLE THAT IT IS BEING CUT OFF
-; FOR SOUND EFFECTS
+; This music uses the hi-hat in channel 8 so it is
+; particularly noticable that it's being cut off for
+; sound effects.
 
 .include "snes.inc"
 .include "snes_joypad.inc"
 .include "snesmod.inc"
-.include "soundbank.inc"
+.include "smconv_soundbank.inc"
 
 .global _nmi, main
 
-;===============================================================
+;=========================================================================================
 	.zeropage
-;===============================================================
+;=========================================================================================
 
 ;...insert some zeropage variables
 
 bgcolor:	.res 2
 
-;===============================================================
+;=========================================================================================
 	.code
-;===============================================================
+;=========================================================================================
 
-; HERE IS AN EXAMPLE SOUND TABLE
-; THE SOUND TABLE DEFINES THE SOUNDS THAT WILL BE USED
-; AS STREAMED SOUND EFFECTS
+; Here is an example Sound Table
+; The Sound Table defines the sounds that will be used as streamed sound effects.
 
-; THE SOUND EFFECT DATA MUST BE IN BRR FORMAT
-; THIS CAN BE DONE WITH THE SNESBRR TOOL BY DMV47
+; The sound data must be in BRR format.
+; BRR files can be created with the snesbrr tool by DMV47.
 
 ;==============================================================================
 SoundTable:
@@ -51,18 +50,17 @@ SND_TEST = 0
 ;------------------------------------------------------------------------------
 
 ;------------------------------
-; INCLUDE BRR DATA INTO PROGRAM
+; Include BRR binary data, pointed to by the sound table entry above.
 ;------------------------------
 TEST66_DATA:
 .incbin "../sound/tada.brr" ;tada sound, converted with snesbrr.exe
 TEST66_DATA_END:
 	
-
 	.a8
 	.i16
 
 ;---------------------------------------------------------------
-; program entry point
+; Program entry point
 ;===============================================================
 main:
 ;===============================================================
@@ -93,7 +91,7 @@ main:
 	jsr	spcPlay			;
 ;---------------------------------------------------------------
 
-	LDx	#150			; lower the music volume a bit (150/255)
+	ldx	#150			; lower the music volume a bit (150/255)
 	jsr	spcSetModuleVolume	;
 
 	lda	#81h			; enable IRQ, joypad
@@ -150,6 +148,7 @@ _nmi:
 	rti				; return
 	
 ;===============================================================
+; Other segments unused.
 	.segment "HDATA"
 	.segment "HRAM"
 	.segment "HRAM2"

@@ -4,7 +4,8 @@ __pycache__
 .tmp
 
 # Installed from source
-tools/sneschk.py
+bin/*
+!bin/*.bat
 *.lnk
 emu/*
 .vscode

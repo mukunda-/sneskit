@@ -1,3 +1,11 @@
+;*
+;* Copyright 2009 Mukunda Johnson (mukunda.com)
+;* 
+;* This file is part of SNESMOD - gh.mukunda.com/snesmod
+;*
+;* See LICENSING.txt
+;*
+
 .ifndef __SNESMOD_INC__
 .define __SNESMOD_INC__
 

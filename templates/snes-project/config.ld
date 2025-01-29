@@ -19,7 +19,7 @@ MEMORY {
 # For HiROM, remove ZROM and use these.
 # HROM is used for extended program code (32k) - not used normally.
 # CROM is common program code (32k) shared across all banks.
-# These are at $C0, but we use $00 to avoid ASM errors.
+# These are at $40, but we use $00 to avoid ASM errors.
 #	HROM: start = $0000, size = $8000, fill = yes;
 #	CROM: start = $8000, size = $7FB0, fill = yes;
 
@@ -36,8 +36,8 @@ MEMORY {
 	ROM3: start = $828000, size = $8000, fill = yes;
 
 # For HiROM, use these instead of the above (size 64k, bank $C0+)
-#	ROM1: start = $C18000, size = $10000, fill = yes;
-#	ROM2: start = $C28000, size = $10000, fill = yes;
+#	ROM1: start = $410000, size = $10000, fill = yes;
+#	ROM2: start = $420000, size = $10000, fill = yes;
 
 #-------------------------------------------------------------------------
 # 128K memory
@@ -54,7 +54,7 @@ SEGMENTS {
 #-------------------------------------------------------------------------
 # Standard segments
 #-------------------------------------------------------------------------
-	CODE:     load = ZROM, type = ro;       # 32k Code
+	CODE:     load = ZROM, type = ro;       # 32k Code (use CROM for hirom)
 	HEADER:   load = CHEAD, type = ro;      # Cartridge header
 	ZEROPAGE: load = ZPAGE, type = zp;      # Zero page
 	BSS:      load = LORAM, type = bss;     # 8k (minus zeropage) BSS
@@ -77,7 +77,7 @@ SEGMENTS {
 
 #-------------------------------------------------------------------------
 # Custom segments - insert as needed.
-#	GRAPHICS:  load = ROM1, type = ro;
-#	SOUNDBANK: load = ROM2, type = ro;
+	GRAPHICS:  load = ROM1, type = ro;
+	SOUNDBANK: load = ROM2, type = ro;
 
 }

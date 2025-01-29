@@ -5,5 +5,11 @@ __pycache__
 
 # Installed from source
 tools/sneschk.py
+tools/pmage*
+bin/sneschk.py
+bin/snesbrr*
+bin/pmage*
+bin/*
+!bin/*.bat
 *.lnk
 emu/*
