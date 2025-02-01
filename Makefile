@@ -6,21 +6,21 @@
 export SNESKIT := $(CURDIR)
 
 # List of binaries to install.
-BIN_CA65    := cc65/bin/ca65.exe
-BIN_BIN2CA  := bin/bin2ca.py
-BIN_PMAGE   := bin/pmage.exe
-BIN_SMCONV  := bin/smconv.exe
-BIN_SNESBRR := bin/snesbrr.exe
-BIN_SNESCHK := bin/sneschk.py
+BIN_CA65    := cc65/bin/ca65
+BIN_BIN2CA  := bin/bin2ca
+BIN_PMAGE   := bin/pmage
+BIN_SMCONV  := bin/smconv
+BIN_SNESBRR := bin/snesbrr
+BIN_SNESCHK := bin/sneschk
 
-ifneq ($(OS),Windows_NT)
-# Strip file extension for Linux.
-BIN_CA65    := $(basename $(BIN_CA65))
-BIN_BIN2CA  := $(basename $(BIN_BIN2CA))
-BIN_PMAGE	:= $(basename $(BIN_PMAGE))
-BIN_SMCONV  := $(basename $(BIN_SMCONV))
-BIN_SNESBRR := $(basename $(BIN_SNESBRR))
-BIN_SNESCHK := $(basename $(BIN_SNESCHK))
+ifeq ($(OS),Windows_NT)
+# Add file extensions for Windows.
+BIN_CA65    := $(BIN_CA65).exe
+BIN_BIN2CA  := $(BIN_BIN2CA).py
+BIN_PMAGE   := $(BIN_PMAGE).exe
+BIN_SMCONV  := $(BIN_SMCONV).exe
+BIN_SNESBRR := $(BIN_SNESBRR).exe
+BIN_SNESCHK := $(BIN_SNESCHK).py
 endif
 
 ALL_BINS := $(BIN_CA65) $(BIN_BIN2CA) $(BIN_PMAGE) $(BIN_SMCONV) $(BIN_SNESBRR) $(BIN_SNESCHK)
@@ -56,23 +56,17 @@ endif
 #-----------------------------------------------------------------------------------------
 # Install pmage from remote repo source.
 $(BIN_PMAGE):
-	mkdir -p build
-	cd build && git clone https://github.com/mukunda-/pmage
-	$(MAKE) -C build/pmage sneskit_install
+	GOBIN=$(SNESKIT)/bin go install go.mukunda.com/pmage@latest
 
 #-----------------------------------------------------------------------------------------
 # Install smconv (snesmod) from remote repo source.
 $(BIN_SMCONV):
-	mkdir -p build
-	cd build && git clone https://github.com/mukunda-/snesmod
-	$(MAKE) -C build/snesmod/smconv sneskit_install
+	GOBIN=$(SNESKIT)/bin go install go.mukunda.com/snesmod/smconv@latest
 
 #-----------------------------------------------------------------------------------------
 # Install snesbrr from remote repo source.
 $(BIN_SNESBRR):
-	mkdir -p build
-	cd build && git clone https://github.com/mukunda-/snesbrr
-	$(MAKE) -C build/snesbrr sneskit_install
+	GOBIN=$(SNESKIT)/bin go install go.mukunda.com/snesbrr@latest
 
 #-----------------------------------------------------------------------------------------
 # Install sneschk from the tool-src folder.
@@ -87,7 +81,6 @@ endif
 # you can exclude the extension while calling bat files. So for example, "sneschk" will
 # run "sneschk.bat" which will execute sneschk.py with the Windows py launcher.
 bin/%.bat: bin/%.py
-
 	echo "@py %SNESKIT%/bin/$*.py %*" > bin/$*.bat
 
 #-----------------------------------------------------------------------------------------

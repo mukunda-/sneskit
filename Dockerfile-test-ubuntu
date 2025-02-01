@@ -6,14 +6,18 @@ FROM ubuntu:22.04
 
 WORKDIR /app
 ENV PATH=$PATH:/usr/local/go/bin:/root/go/bin
+ENV SNESKIT=/app
 
 RUN apt-get update && apt-get install -y python3 python3-venv python3-pip git curl
 
 # Install Go
-RUN curl -L -O https://go.dev/dl/go1.23.4.linux-amd64.tar.gz \
-   && tar -C /usr/local -xzf go1.23.4.linux-amd64.tar.gz \
+RUN curl -L -O https://go.dev/dl/go1.23.5.linux-amd64.tar.gz \
+   && tar -C /usr/local -xzf go1.23.5.linux-amd64.tar.gz \
    && go install github.com/a-h/templ/cmd/templ@latest
 
 COPY . .
 
-RUN /bin/bash tool-src/test-linux.sh
+# Install tools and build examples.
+RUN make all tidy \
+   && make -C templates/snes-project \
+   && make -C example/snesmod

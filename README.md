@@ -23,9 +23,14 @@ licensed under MIT.
   * go
 
 After checking out the repo, run `make all tidy` to install tools. The `bin` folder will
-be populated.
+be populated. If you're on Windows, you can easily install Make with winget:
 
-SNESKIT should be added to your environment pointing to the sneskit folder.
+```
+PowerShell> winget install ezwinports.make
+```
+
+`SNESKIT` should be added to your environment pointing to the sneskit folder, no trailing
+slash.
 
 ## Tool installations:
 
